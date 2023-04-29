@@ -1,4 +1,4 @@
-import {useContext, useEffect, useState} from 'react';
+import {useContext, useEffect, useState, useCallback} from 'react';
 import { useSession, useUser, useSupabaseClient } from '@supabase/auth-helpers-react'
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { useRouter } from 'next/router'
@@ -23,18 +23,39 @@ const Deck = () => {
   const [easyTime, setEasyTime] = useState("");
   const user = useUser()
 
-  useEffect (() => {
-    if (deck_id) {
-      getCharacterReviewCards()
-    }
-  }, [deck_id])
+  const getCharacterReviewCards = useCallback(async () => {
+    setSearchLoading(true);
+    try {
+        let { data, error, status } = await supabase
+        .from('cards')
+        .select(`
+        card_id,
+        character_serial, 
+        difficulty, 
+        due_date, 
+        date_last_reviewed,
+        characters (
+          character_serial,
+          character,
+          pinyin,
+          english_meaning
+        )
+        `)
+        .eq('user_id', user.id)
+        .eq('card_type', 'characters')
+        .lte('due_date', 'now()')
+        .order('due_date', {ascending: true})
 
-  useEffect (() => {
-    if (reviewCards.length > 0) {
-      updateCardReviewTimes(reviewCards[0])
-      setReviewCardMeanings(processWords(reviewCards[0].characters.pinyin, reviewCards[0].characters.english_meaning))
-    }
-  }, [reviewCards])
+        if (error && status !== 406) {
+            throw error
+        }         
+        setReviewCards(data)
+    } catch (error) {
+        ErrorNotification(error.message)
+    } 
+    
+    setSearchLoading(false); 
+  }, [user, supabase]);
 
   const getCardReviewTime = (card, response) => {
     let performance = 0;
@@ -73,47 +94,6 @@ const Deck = () => {
     return {daysBetweenReviews: daysBetweenReviews, difficulty: difficulty.toFixed(2)};
   }
 
-  const getCharacterReviewCards = async () => {  
-    setSearchLoading(true);
-    try {
-        let { data, error, status } = await supabase
-        .from('cards')
-        .select(`
-        card_id,
-        character_serial, 
-        difficulty, 
-        due_date, 
-        date_last_reviewed,
-        characters (
-          character_serial,
-          character,
-          pinyin,
-          english_meaning
-        )
-        `)
-        .eq('user_id', user.id)
-        .eq('card_type', 'characters')
-        .lte('due_date', 'now()')
-        .order('due_date', {ascending: true})
-        
-
-        if (error && status !== 406) {
-            throw error
-        }         
-        setReviewCards(data)
-    } catch (error) {
-        ErrorNotification(error.message)
-    } 
-    
-    setSearchLoading(false);
-  }
-
-  const updateCardReviewTimes = async (card) => {
-    setAgainTime(getCardReviewTime(card, "again").daysBetweenReviews)
-    setEasyTime(getCardReviewTime(card, "easy").daysBetweenReviews)
-    setGoodTime(getCardReviewTime(card, "good").daysBetweenReviews)
-    setHardTime(getCardReviewTime(card, "hard").daysBetweenReviews)
-  }
 
   const updateCard = async (card, response) => {
     let {daysBetweenReviews, difficulty} = getCardReviewTime(card, response)
@@ -141,6 +121,25 @@ const Deck = () => {
     }
     setIsReviewed(false)
   }
+
+  useEffect (() => {
+    if (deck_id) {
+      getCharacterReviewCards()
+    }
+  }, [deck_id, getCharacterReviewCards])
+
+  useEffect (() => {
+    const updateCardReviewTimes = async (card) => {
+      setAgainTime(getCardReviewTime(card, "again").daysBetweenReviews)
+      setEasyTime(getCardReviewTime(card, "easy").daysBetweenReviews)
+      setGoodTime(getCardReviewTime(card, "good").daysBetweenReviews)
+      setHardTime(getCardReviewTime(card, "hard").daysBetweenReviews)
+    }
+    if (reviewCards.length > 0) {
+      updateCardReviewTimes(reviewCards[0])
+      setReviewCardMeanings(processWords(reviewCards[0].characters.pinyin, reviewCards[0].characters.english_meaning))
+    }
+  }, [reviewCards, , setReviewCardMeanings])
 
   return (
     <Page>

@@ -6,7 +6,7 @@ import {ProfileContext} from '../context/profile.tsx';
 import Nav from './nav.tsx';
 
 
-const openError = (error) => {
+const openError = (error: string) => {
   notification.open({
     message: 'Error',
     description:
@@ -25,10 +25,7 @@ const Page = ({ children, isProtected }: { children: ReactNode, isProtected: boo
     const user = useUser()
 
     useEffect(() => {
-      getProfile();
-    }, [session]);
-
-    async function getProfile() {
+      async function getProfile() {
         if(session) {
           try {
             if (!user) throw new Error('No user')
@@ -51,7 +48,9 @@ const Page = ({ children, isProtected }: { children: ReactNode, isProtected: boo
               console.log(user)
           } 
         } 
-    }
+      }
+      getProfile();
+    }, [session, user, supabase, setProfile]);
 
     return (
         <Layout style={{minHeight: '100vh'}}>

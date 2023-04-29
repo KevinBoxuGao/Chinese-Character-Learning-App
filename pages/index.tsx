@@ -16,7 +16,7 @@ const Landing = () => {
     if(session) {
       router.push('/home')
     }
-  }, [session])
+  }, [session, router])
   
   
 

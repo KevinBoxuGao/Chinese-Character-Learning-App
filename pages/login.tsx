@@ -17,7 +17,7 @@ const Login = () => {
     if(session) {
       router.push('/home')
     }
-  }, [session])
+  }, [session, router])
 
   return (
     <Layout style={{minHeight: '100vh'}}>

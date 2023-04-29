@@ -24,8 +24,42 @@ const Characters = () => {
     const [sortingOrder, setSortingOrder] = useState('descending');
     
     useEffect(() => {
-        getTopCharacters()
-    }, [currentPage, pageSize, sortingOrder, sortingCategory ])
+        const getTopCharacters = async (currentPage, pageSize, sortingOrder, sortingCategory) => {
+            let page = currentPage;
+            setSearchLoading(true);
+            try {
+                let { data, error, status, count } = await supabase
+                    .from('characters')
+                    .select('*', { count: 'exact', head: true })
+                    .order(sortingCategory, { ascending: sortingOrder == "ascending"})
+                    .range((page-1)*pageSize, (page-1)*pageSize+pageSize-1)
+    
+                if (error && status !== 406) {
+                    throw error
+                }
+                setCharacterCount(count)
+            } catch (error) {
+                ErrorNotification(error.message)
+            }
+    
+            try {
+                let { data, error, status, count } = await supabase
+                    .from('characters')
+                    .select('*')
+                    .order(sortingCategory, { ascending: sortingOrder == "ascend"}) 
+                    .range((page-1)*pageSize, (page-1)*pageSize+pageSize-1)
+    
+                if (error && status !== 406) {
+                    throw error
+                }
+                setSearchResults(data)
+            } catch (error) {
+                ErrorNotification(error.message)
+            }
+            setSearchLoading(false);
+        }
+        getTopCharacters(currentPage, pageSize, sortingOrder, sortingCategory)
+    }, [currentPage, pageSize, sortingOrder, sortingCategory, supabase ])
 
     useEffect(() => {
         if(searchResults && searchResults.length > 0) {
@@ -42,41 +76,6 @@ const Characters = () => {
             setTableData([])
         }
     }, [searchResults])
-
-    const getTopCharacters = async () => {
-        let page = currentPage;
-        setSearchLoading(true);
-        try {
-            let { data, error, status, count } = await supabase
-                .from('characters')
-                .select('*', { count: 'exact', head: true })
-                .order(sortingCategory, { ascending: sortingOrder == "ascending"})
-                .range((page-1)*pageSize, (page-1)*pageSize+pageSize-1)
-
-            if (error && status !== 406) {
-                throw error
-            }
-            setCharacterCount(count)
-        } catch (error) {
-            ErrorNotification(error.message)
-        }
-
-        try {
-            let { data, error, status, count } = await supabase
-                .from('characters')
-                .select('*')
-                .order(sortingCategory, { ascending: sortingOrder == "ascend"}) 
-                .range((page-1)*pageSize, (page-1)*pageSize+pageSize-1)
-
-            if (error && status !== 406) {
-                throw error
-            }
-            setSearchResults(data)
-        } catch (error) {
-            ErrorNotification(error.message)
-        }
-        setSearchLoading(false);
-    }
 
     const onChange = (pagination, filters, sorter) => {
         setCurrentPage(pagination.current)
