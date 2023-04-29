@@ -3,7 +3,7 @@ import { useSession, useUser, useSupabaseClient } from '@supabase/auth-helpers-r
 import { useRouter } from 'next/router'
 import { Typography, Space, Input, Button } from 'antd';
 const { Search } = Input;
-import Page from 'components/Page'
+import Page from 'components/page.tsx'
 import { processWords } from 'utils/index.tsx'
 import { ErrorNotification, SuccessNotification } from 'components/notifications.tsx'
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
