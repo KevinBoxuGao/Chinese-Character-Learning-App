@@ -7,7 +7,7 @@ import {Avatar, Layout, theme, Typography, Menu, Modal, Button, Dropdown, Space}
 const { Header } = Layout;
 const { Title } = Typography;
 
-import {ProfileContext} from '../context/profile.tsx';
+import {ProfileContext} from 'context/profile.tsx';
 
 export default function Nav({ session, profile }: { session: Session, profile: object }) {
   const supabase = useSupabaseClient();

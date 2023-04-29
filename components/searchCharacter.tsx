@@ -1,9 +1,9 @@
 import {useContext, useEffect, useState} from 'react';
 import { useSupabaseClient } from '@supabase/auth-helpers-react'
-import { ErrorNotification } from '../components/notifications.tsx';
+import { ErrorNotification } from 'components/notifications.tsx';
 import { Input, AutoComplete, Space} from 'antd';
 import { useRouter } from 'next/router'
-import { addPinyinAccent } from '../utils/index.tsx';
+import { addPinyinAccent } from 'utils/index.tsx';
 const { Search } = Input;
 
 const SearchCharacter = () => {
@@ -69,7 +69,6 @@ const SearchCharacter = () => {
         setOptions(result)
     }
     const searchCharacter = async (value: string) => {
-        console.log(value)
         if(value.length > 0) {
             router.push("/character/" + value)
         }

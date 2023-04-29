@@ -1,7 +1,7 @@
 import {useContext, useState, useEffect} from 'react';
 import { useUser, useSupabaseClient, Session, useSession } from '@supabase/auth-helpers-react'
-import Page from '../components/page.tsx';
-import {ProfileContext} from '../context/profile.tsx';
+import Page from 'components/page.tsx';
+import {ProfileContext} from 'context/profile.tsx';
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import {Typography, Input, theme, Card, Button, Space, notification} from 'antd';
 import { useRouter } from 'next/router'
@@ -70,7 +70,7 @@ const Profile = () => {
       openError('Error updating the data!')
     } finally {
       setLoading(false)
-      console.log(session);
+
     }
   }
 

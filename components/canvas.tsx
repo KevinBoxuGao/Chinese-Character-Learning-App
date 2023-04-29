@@ -54,7 +54,7 @@ const Canvas = () => {
     }
 
     const drawing = (e: React.ChangeEvent<HTMLInputElement>) => { //if the pen is down in the canvas, draw/erase
-        //console.log(canvasRef.current.getContext('2d'))
+
         const ctx = canvasRef?.current?.getContext('2d');
         if(pen === 'down') {
             ctx.beginPath()

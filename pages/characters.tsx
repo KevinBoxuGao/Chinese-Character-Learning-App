@@ -1,14 +1,14 @@
 import {useContext, useEffect, useState} from 'react';
 import { useSession, useUser, useSupabaseClient } from '@supabase/auth-helpers-react'
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
-import Page from '../components/page.tsx';
-import { ErrorNotification } from '../components/notifications.tsx';
-import SearchCharacter from '../components/searchCharacter.tsx';
+import Page from 'components/page.tsx';
+import { ErrorNotification } from 'components/notifications.tsx';
+import SearchCharacter from 'components/searchCharacter.tsx';
 import { Input, Space, Typography, Card, AutoComplete, Pagination, Col, Row, Table} from 'antd';
 import { useRouter } from 'next/router'
 const { Search } = Input;
 import Link from 'next/link'
-import { convertPinyin, convertEnglish } from '../utils/index.tsx';
+import { convertPinyin, convertEnglish } from 'utils/index.tsx';
 
 const Characters = () => {
     const router = useRouter()

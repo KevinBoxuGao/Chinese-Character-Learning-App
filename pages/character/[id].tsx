@@ -3,70 +3,18 @@ import { useSession, useUser, useSupabaseClient } from '@supabase/auth-helpers-r
 import { useRouter } from 'next/router'
 import { Typography, Space, Input, Button } from 'antd';
 const { Search } = Input;
-import Page from '../../components/Page'
-import { processWords } from '../../utils/index.tsx'
-import { ErrorNotification, SuccessNotification } from '../../components/notifications.tsx'
+import Page from 'components/Page'
+import { processWords } from 'utils/index.tsx'
+import { ErrorNotification, SuccessNotification } from 'components/notifications.tsx'
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
-import SearchCharacter from '../../components/searchCharacter.tsx';
+import SearchCharacter from 'components/searchCharacter.tsx';
 
 const Character = ({initialSession, cardAddedDefault, meanings, searchResults}) => {
   const router = useRouter()
   const { id } = router.query
-  //const user = useUser()
   const supabase = useSupabaseClient();
   const [searchLoading, setSearchLoading] = useState(false);
-  //const [searchResults, setSearchResults] = useState(null);
-  //const [meanings, setMeanings] = useState([]);
   const [cardAdded, setCardAdded] = useState(cardAddedDefault);
-
-  /*useEffect (() => {
-    if (id) {
-      searchCharacter(id)
-    }
-  }, [id])*/
-
-  /*useEffect (() => {
-    if (searchResults && searchResults.length > 0) {
-      let result = processWords(searchResults[0].pinyin, searchResults[0].english_meaning)
-      setMeanings(result)
-    }
-  }, [searchResults])*/
-
-  /*const searchCharacter = async (value: string) => {
-    setSearchLoading(true);
-    try {
-        let { data, error, status } = await supabase
-            .from('characters')
-            .select('*')
-            .eq('character', value)
-
-        if (error && status !== 406) {
-            throw error
-        }         
-        setSearchResults(data);
-        if(data && data.length > 0) {
-          let card = await supabase
-          .from('cards')
-          .select(`character_serial, user_id, card_type`)
-          .eq('user_id', user.id)
-          .eq('card_type', 'characters')
-          .eq('character_serial', data[0].character_serial)
-          if (card.error && card.status !== 406) {
-            throw card.error
-          }  
-          if(card.data && card.data.length > 0) {
-            setCardAdded(true)
-          } else {
-            setCardAdded(false)
-          }
-        }
-    } catch (error) {
-        ErrorNotification(error.message)
-    } 
-
-    setSearchLoading(false);
-  }*/
-
   const searchHandler = (value: string) => {
     if(value.length > 0) {
       router.push(`/character/${value}`)
@@ -74,13 +22,13 @@ const Character = ({initialSession, cardAddedDefault, meanings, searchResults}) 
   }
 
   const addCard = () => { 
-    //console.log(searchResults[0])
+
     supabase
       .from('cards')
       .upsert({ "character_serial" : searchResults[0].character_serial, "card_type" : "characters", "user_id" : initialSession.user.id}, {onConflict: 'character_serial, user_id' })
       .select()
       .then(({ data, error }) => {
-        //console.log(data, error)
+
         SuccessNotification("Card added successfully")
         setCardAdded(true)
       })
@@ -162,7 +110,6 @@ export const getServerSideProps = async (context) => {
   } 
 
   let meanings = searchResults && searchResults.length > 0 ? processWords(searchResults[0].pinyin, searchResults[0].english_meaning) : [];
-  console.log(processWords(searchResults[0].pinyin, searchResults[0].english_meaning))
   return {
     props: {
       initialSession: session,

@@ -2,7 +2,7 @@ import {useEffect, useState} from 'react';
 import { Auth, ThemeSupa } from '@supabase/auth-ui-react'
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { useSession, useSupabaseClient } from '@supabase/auth-helpers-react'
-import Page from '../components/page.tsx';
+import Page from 'components/page.tsx';
 import { useRouter } from 'next/router'
 import {Avatar, Layout, theme, Typography, Menu, Modal, Button, Dropdown, Space} from 'antd';
 const { Header, Content} = Layout;

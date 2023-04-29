@@ -3,7 +3,7 @@ import { Auth, ThemeSupa } from '@supabase/auth-ui-react'
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { useSession, useSupabaseClient, useUser } from '@supabase/auth-helpers-react'
 import { Typography, Carousel, Card, Space, Image, Col, Row, ConfigProvider, theme } from 'antd';
-import Page from '../components/page.tsx';
+import Page from 'components/page.tsx';
 import { useRouter } from 'next/router'
 
 const Landing = () => {

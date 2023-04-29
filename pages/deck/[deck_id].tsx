@@ -3,10 +3,10 @@ import { useSession, useUser, useSupabaseClient } from '@supabase/auth-helpers-r
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { useRouter } from 'next/router'
 import { Card, Typography, Button, Space, Spin, ConfigProvider } from 'antd';
-import Page from '../../components/Page'  
-import {ErrorNotification} from '../../components/notifications.tsx'
-import {processWords} from '../../utils/index.tsx'
-import Canvas from '../../components/canvas.tsx'
+import Page from 'components/Page'  
+import {ErrorNotification} from 'components/notifications.tsx'
+import {processWords} from 'utils/index.tsx'
+import Canvas from 'components/canvas.tsx'
 
 const Deck = () => {
   const router = useRouter()

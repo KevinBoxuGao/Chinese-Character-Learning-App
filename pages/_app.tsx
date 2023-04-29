@@ -3,8 +3,8 @@ import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { SessionContextProvider, Session } from '@supabase/auth-helpers-react'
 import {ConfigProvider, theme} from 'antd'
 import 'antd/dist/reset.css';
-import '../styles/globals.css';
-import {ProfileContext} from '../context/profile.tsx';
+import 'styles/globals.css';
+import {ProfileContext} from 'context/profile.tsx';
 
 
 function MyApp({

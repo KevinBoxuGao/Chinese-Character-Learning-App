@@ -2,8 +2,8 @@ import {useContext, useEffect } from 'react';
 import { useSession, useUser, useSupabaseClient} from '@supabase/auth-helpers-react'
 import { Layout, Menu, theme, notification } from 'antd';
 const { Header, Content} = Layout;
-import {ProfileContext} from '../context/profile.tsx';
-import Nav from './nav.tsx';
+import {ProfileContext} from 'context/profile.tsx';
+import Nav from 'components/nav.tsx';
 
 
 const openError = (error: string) => {
@@ -45,7 +45,6 @@ const Page = ({ children, isProtected }: { children: ReactNode, isProtected: boo
             }
           } catch (error) {
               openError(error.message);
-              console.log(user)
           } 
         } 
       }

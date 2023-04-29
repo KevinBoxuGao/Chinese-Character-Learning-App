@@ -2,53 +2,10 @@ import {useEffect, useState} from 'react';
 import { Auth, ThemeSupa } from '@supabase/auth-ui-react'
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { theme, Typography, Space, Row, Col, Card, Button, Spin, ConfigProvider} from 'antd';
-import Page from '../components/page.tsx';
+import Page from 'components/page.tsx';
 import Link from 'next/link';
 
 const Home = ({initialSession, user, decks}) => {
-  //const session = useSession();
-  //const supabase = useSupabaseClient();
-  //const [newCards, setNewCards] = useState(0);
-  //const [dueCards, setDueCards] = useState(0);
-  //const [loadingDeckCounts, setLoadingDeckCounts] = useState(false);
-
-  /*/useEffect(()=> {
-    console.log(decks)
-  }, [decks])
-
-  //useEffect (() => {
-    //updateDeckCounts();
-  //}, [session])
-
-  /*const updateDeckCounts = async () => {
-    setLoadingDeckCounts(true);
-    if(session) {
-      let { data, error } = await supabase
-        .from('cards')
-        .select('*')
-        .eq('user_id', user.id)
-      
-      if (error) {
-        console.log(error)
-        throw error
-      }
-      let newCards = 0;
-      let dueCards = 0;
-      data.forEach((card) => {
-        if(new Date(card.due_date) <= new Date()) {
-          if(card.New) {
-            newCards++;
-          } else {
-            dueCards++;
-          }
-        }
-      })
-      setNewCards(newCards);
-      setDueCards(dueCards);
-    }
-    setLoadingDeckCounts(false);
-  }*/
-
 
   return (
     <Page>
@@ -103,8 +60,7 @@ export const getServerSideProps = async (context) => {
       if(card.New) {
         newCards++;
       } else {
-        //console.log(new Date(card.due_date))
-        //console.log(new Date())
+
         dueCards++;
       }
     }
